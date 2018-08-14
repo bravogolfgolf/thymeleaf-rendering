@@ -10,7 +10,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class TemplateConfiguration implements WebMvcConfigurer, ApplicationContextAware {
@@ -69,7 +68,7 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
         return resolver;
     }
 
-    private ITemplateResolver htmlTemplateResolver() {
+    private SpringResourceTemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = templateResolver();
         resolver.setOrder(0);
         resolver.setPrefix("classpath:templates/");
@@ -77,7 +76,7 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
         return resolver;
     }
 
-    private ITemplateResolver cssTemplateResolver() {
+    private SpringResourceTemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = templateResolver();
         resolver.setOrder(1);
         resolver.setPrefix("classpath:/static/css/");
@@ -85,7 +84,7 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
         return resolver;
     }
 
-    private ITemplateResolver javascriptTemplateResolver() {
+    private SpringResourceTemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = templateResolver();
         resolver.setOrder(2);
         resolver.setPrefix("classpath:/static/js/");
