@@ -12,7 +12,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
-public class TemplateConfiguration implements WebMvcConfigurer, ApplicationContextAware {
+public class ThymeleafConfiguration implements WebMvcConfigurer, ApplicationContextAware {
 
     private static final String UTF8 = "UTF-8";
     private ApplicationContext applicationContext;
