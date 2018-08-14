@@ -22,13 +22,13 @@ public class DemoController {
     public String main(Model model, HttpServletResponse response) {
         System.out.println("CSS");
         model.addAttribute("backgroundColor", "lightblue");
-        return "css/main.css";
+        return "main.css";
     }
 
     @RequestMapping(value = "common.js", method = RequestMethod.GET)
     public String common(Model model, HttpServletResponse response) {
         System.out.println("JAVASCRIPT");
         model.addAttribute("code", "Thymeleaf rules!".hashCode());
-        return "js/common.js";
+        return "common.js";
     }
 }

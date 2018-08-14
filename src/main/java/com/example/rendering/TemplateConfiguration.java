@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -33,9 +31,7 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
     @Bean
     public ViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        ITemplateResolver templateResolver = htmlTemplateResolver();
-        TemplateEngine templateEngine = templateEngine(templateResolver);
-        resolver.setTemplateEngine((ISpringTemplateEngine) templateEngine);
+        resolver.setTemplateEngine(templateEngine());
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
         resolver.setViewNames(array("*.html"));
@@ -45,7 +41,7 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
     @Bean
     public ViewResolver cssViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine((ISpringTemplateEngine) templateEngine(cssTemplateResolver()));
+        resolver.setTemplateEngine(templateEngine());
         resolver.setContentType("text/css");
         resolver.setCharacterEncoding(UTF8);
         resolver.setViewNames(array("*.css"));
@@ -55,22 +51,29 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
     @Bean
     public ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine((ISpringTemplateEngine) templateEngine(javascriptTemplateResolver()));
+        resolver.setTemplateEngine(templateEngine());
         resolver.setContentType("application/javascript");
         resolver.setCharacterEncoding(UTF8);
         resolver.setViewNames(array("*.js"));
         return resolver;
     }
 
-    private TemplateEngine templateEngine(ITemplateResolver templateResolver) {
+    @Bean
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.setTemplateResolver(templateResolver);
+        engine.addTemplateResolver(htmlTemplateResolver());
+        engine.addTemplateResolver(cssTemplateResolver());
+        engine.addTemplateResolver(javascriptTemplateResolver());
         return engine;
     }
 
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setOrder(0);
+        resolver.setCheckExistence(true);
+        resolver.setPrefix("classpath:templates/");
+        resolver.setCacheable(false);
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
@@ -78,6 +81,10 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setOrder(1);
+        resolver.setCheckExistence(true);
+        resolver.setPrefix("classpath:/static/css/");
+        resolver.setCacheable(false);
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }
@@ -85,6 +92,10 @@ public class TemplateConfiguration implements WebMvcConfigurer, ApplicationConte
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setOrder(2);
+        resolver.setCheckExistence(true);
+        resolver.setPrefix("classpath:/static/js/");
+        resolver.setCacheable(false);
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
     }

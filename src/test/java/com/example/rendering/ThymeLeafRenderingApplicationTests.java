@@ -34,7 +34,7 @@ public class ThymeLeafRenderingApplicationTests {
     public void shouldGetCSS() throws Exception {
         mvc
                 .perform(get("/main.css"))
-                .andExpect(view().name("css/main.css"))
+                .andExpect(view().name("main.css"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -43,7 +43,7 @@ public class ThymeLeafRenderingApplicationTests {
     public void shouldGetJS() throws Exception {
         mvc
                 .perform(get("/common.js"))
-                .andExpect(view().name("js/common.js"))
+                .andExpect(view().name("common.js"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
